@@ -46,8 +46,9 @@ export default function AdminHeader({ onToggleMobile }) {
   }, []);
 
   const handleLogout = () => {
+    setProfileDropdownOpen(false);
     logoutAdmin();
-    navigate('/admin/login');
+    navigate('/admin/login', { replace: true });
   };
 
   const handleSearchSubmit = (e) => {

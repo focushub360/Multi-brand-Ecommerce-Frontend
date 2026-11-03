@@ -1,33 +1,48 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
-import { getStoredUser } from '../../utils/auth';
+import { Navigate, useLocation } from 'react-router-dom';
+import { getStoredDealer, getStoredCustomer } from '../../utils/auth';
 
 /**
- * Route protector for role-based dashboard access.
- * - Redirects unauthenticated users to /login.
- * - Prevents dealers from accessing /admin/dashboard (redirects them to /dealer/dashboard).
- * - Prevents admins from accessing /dealer/dashboard (redirects them to /admin/dashboard).
- * - Redirects unsupported roles to /login.
+ * Route protector for role-based access.
+ * - Redirects unauthenticated users to /login preserving target URL and reason.
+ * - Restricts access to allowed roles (dealer, customer).
  */
 export default function ProtectedRoute({ allowedRole, children }) {
-  const user = getStoredUser();
+  const location = useLocation();
 
-  // 1. Unauthenticated -> redirect to /login
-  if (!user || !user.role) {
-    return <Navigate to="/login" replace />;
+  if (allowedRole === 'dealer') {
+    const dealer = getStoredDealer();
+    if (!dealer || dealer.role !== 'dealer') {
+      return (
+        <Navigate
+          to="/login"
+          state={{
+            message: 'Dealer credentials required to access the Dealer Portal.',
+            from: location.pathname + location.search
+          }}
+          replace
+        />
+      );
+    }
+    return children;
   }
 
-  // 2. Cross-role prevention
-  if (allowedRole && user.role !== allowedRole) {
-    if (user.role === 'admin') {
-      return <Navigate to="/admin/dashboard" replace />;
+  if (allowedRole === 'customer') {
+    const customer = getStoredCustomer();
+    if (!customer || customer.role !== 'customer') {
+      return (
+        <Navigate
+          to="/login"
+          state={{
+            message: 'Please log in to continue.',
+            from: location.pathname + location.search
+          }}
+          replace
+        />
+      );
     }
-    if (user.role === 'dealer') {
-      return <Navigate to="/dealer/dashboard" replace />;
-    }
-    return <Navigate to="/login" replace />;
+    return children;
   }
 
   return children;
 }
-

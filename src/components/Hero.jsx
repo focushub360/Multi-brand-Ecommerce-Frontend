@@ -5,7 +5,7 @@ import CategoryCards from './CategoryCards';
 
 export default function Hero() {
   return (
-    <section className="relative bg-[#0A3325] pt-0 pb-20 sm:pb-24 md:pb-26 lg:pb-28 overflow-visible">
+    <section className="relative bg-[#0A3325] pt-0 pb-10 sm:pb-14 lg:pb-28 overflow-visible">
       {/* Integrated Transparent Navbar */}
       <Navbar />
 
@@ -127,8 +127,8 @@ export default function Hero() {
         <SearchBar />
       </div>
 
-      {/* Category Cards Overlapping Hero and Ivory Section */}
-      <div className="absolute left-0 right-0 bottom-0 translate-y-[46%] md:translate-y-[48%] z-20 pointer-events-none">
+      {/* Category Cards: In normal document flow on mobile/tablet, overlapping on desktop */}
+      <div className="mt-8 sm:mt-10 lg:mt-0 lg:absolute lg:left-0 lg:right-0 lg:bottom-0 lg:translate-y-[48%] z-20 pointer-events-auto lg:pointer-events-none">
         <CategoryCards />
       </div>
     </section>

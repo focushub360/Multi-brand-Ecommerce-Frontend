@@ -48,6 +48,7 @@ export function setStoredAdmin(admin) {
 export function clearStoredAdmin() {
   try {
     localStorage.removeItem(ADMIN_AUTH_STORAGE_KEY);
+    window.dispatchEvent(new Event('grove_admin_auth_changed'));
   } catch (e) {
     console.error('Error clearing admin session:', e);
   }
@@ -55,38 +56,11 @@ export function clearStoredAdmin() {
 
 /**
  * Checks if a valid admin session is active.
- * Also supports seamless bridge if admin logged in through general /login.
+ * Strictly checks the dedicated grove_admin_user storage key.
  */
 export function isAdminAuthenticated() {
   const admin = getStoredAdmin();
-  if (admin && admin.email && admin.id) {
-    return true;
-  }
-
-  // Seamless fallback for admin user logging in via general login
-  try {
-    const rawLegacy = localStorage.getItem('grove_current_user');
-    if (rawLegacy) {
-      const user = JSON.parse(rawLegacy);
-      if (user && user.role === 'admin') {
-        const matchingAdminSeed = adminUsers.find(
-          (a) => a.email.toLowerCase() === (user.email || '').toLowerCase()
-        ) || adminUsers[0];
-
-        setStoredAdmin({
-          id: user.id || matchingAdminSeed.id,
-          name: user.name || matchingAdminSeed.name,
-          email: user.email || matchingAdminSeed.email,
-          role: matchingAdminSeed.role || 'Super Admin',
-          department: matchingAdminSeed.department || 'Platform Operations',
-          avatar: matchingAdminSeed.avatar || 'GA'
-        });
-        return true;
-      }
-    }
-  } catch {}
-
-  return false;
+  return Boolean(admin && admin.email && admin.id && (admin.role === 'admin' || admin.role?.toLowerCase().includes('admin')));
 }
 
 /**

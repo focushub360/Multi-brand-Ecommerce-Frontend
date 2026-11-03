@@ -132,7 +132,7 @@ export default function AdminSidebar({ mobileOpen = false, onCloseMobile = () =>
   const handleLogout = () => {
     logoutAdmin();
     onCloseMobile();
-    navigate('/admin/login');
+    navigate('/admin/login', { replace: true });
   };
 
   const sidebarContent = (

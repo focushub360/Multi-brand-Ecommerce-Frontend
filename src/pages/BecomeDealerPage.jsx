@@ -460,9 +460,10 @@ export default function BecomeDealerPage() {
                     }`}
                   >
                     <option value="">Select Primary Category</option>
-                    <option value="Agriculture">Agriculture &amp; Farming Equipment</option>
+                    <option value="Agriculture & Farming">Agriculture &amp; Farming</option>
                     <option value="Electronics & Gadgets">Electronics &amp; Gadgets</option>
                     <option value="Automotive & Spare Parts">Automotive &amp; Spare Parts</option>
+                    <option value="Groceries">Groceries</option>
                   </select>
                   {errors.businessCategory && (
                     <p className="mt-1 text-[11.5px] font-semibold text-red-600 flex items-center gap-1">

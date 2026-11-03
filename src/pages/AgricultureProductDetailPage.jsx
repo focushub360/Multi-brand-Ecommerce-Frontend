@@ -10,6 +10,7 @@ import ProductSpecsAndReviewsTabs from '../components/agriculture/details/Produc
 import AgricultureProductCard from '../components/agriculture/AgricultureProductCard';
 import { useWishlist } from '../hooks/useWishlist';
 import { useCart } from '../hooks/useCart';
+import { isCustomerAuthenticated, setPendingAction } from '../utils/auth';
 import { 
   ArrowLeft, 
   AlertCircle, 
@@ -111,13 +112,31 @@ export default function AgricultureProductDetailPage() {
     }
   };
 
-  // Handler for Buy Now (adds to cart & opens order prompt)
+  // Handler for Buy Now (fast-track checkout without adding to cart)
   const handleBuyNow = (prod, quantity) => {
-    addToCart(prod, quantity);
-    setBuyNowNotification({
+    const qty = Math.max(1, parseInt(quantity, 10) || 1);
+    if (!isCustomerAuthenticated()) {
+      setPendingAction({
+        type: 'buy_now',
+        product: prod,
+        productId: prod.id,
+        quantity: qty,
+        returnUrl: '/checkout?mode=buynow'
+      });
+      navigate('/login', {
+        state: {
+          message: 'Please log in to continue.',
+          from: '/checkout?mode=buynow'
+        }
+      });
+      return;
+    }
+
+    sessionStorage.setItem('grove_buynow_item', JSON.stringify({
       product: prod,
-      quantity
-    });
+      quantity: qty
+    }));
+    navigate('/checkout?mode=buynow');
   };
 
   // If product not found

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { 
   Eye, 
   EyeOff, 
@@ -10,16 +10,24 @@ import {
   CheckCircle2, 
   X,
   KeyRound,
-  ArrowRight
+  ArrowRight,
+  ShieldCheck,
+  UserCheck
 } from 'lucide-react';
 import CategoryShowcase from '../components/auth/CategoryShowcase';
-import demoUsers from '../data/users.json';
-import { setStoredUser, clearStoredUser } from '../utils/auth';
+import { 
+  setStoredCustomer, 
+  setStoredDealer, 
+  authenticateUser, 
+  executePendingAction, 
+  getAllUsers 
+} from '../utils/auth';
 
 const CURRENT_YEAR = new Date().getFullYear();
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -70,43 +78,44 @@ export default function LoginPage() {
 
     setIsSubmitting(true);
 
-    // Simulate verification against local demo data
+    // Simulate verification against centralized users.json and local demo registration
     setTimeout(() => {
       setIsSubmitting(false);
 
-      const matchedUser = demoUsers.find(
-        (u) => u.email.toLowerCase() === email.trim().toLowerCase() && u.password === password
-      );
+      const res = authenticateUser(email, password);
 
-      if (!matchedUser) {
-        // Invalid email/password: stay on Login page and display invalid credentials message
-        setAuthError('Invalid email or password. Please verify your credentials.');
+      if (!res.success) {
+        setAuthError(res.error);
         return;
       }
 
-      // Read the user's role field dynamically from the matched JSON record
+      const matchedUser = res.user;
       const userRole = matchedUser.role;
 
-      if (userRole === 'admin') {
-        // Store user basic information and role (strictly no password)
-        setStoredUser({
+      if (userRole === 'customer') {
+        // Authenticate customer session in localStorage (strictly no password)
+        setStoredCustomer({
           id: matchedUser.id,
           name: matchedUser.name,
           email: matchedUser.email,
-          role: 'admin'
+          role: 'customer'
         });
+
+        // Execute any pending shopping action (Add to Cart, Wishlist, Buy Now)
+        const pendingDest = executePendingAction(matchedUser);
 
         setLoginSuccess({
           name: matchedUser.name,
-          targetText: 'Credentials authenticated. Redirecting to Admin Dashboard...'
+          targetText: 'Customer authenticated. Restoring your session...'
         });
 
         setTimeout(() => {
-          navigate('/admin/dashboard');
-        }, 800);
+          const destination = pendingDest || location.state?.from || '/';
+          navigate(destination, { replace: true });
+        }, 700);
       } else if (userRole === 'dealer') {
-        // Store user basic information, role, and dealerId (strictly no password)
-        setStoredUser({
+        // Authenticate dealer session in localStorage (strictly no password)
+        setStoredDealer({
           id: matchedUser.id,
           name: matchedUser.name,
           email: matchedUser.email,
@@ -116,24 +125,25 @@ export default function LoginPage() {
 
         setLoginSuccess({
           name: matchedUser.name,
-          targetText: 'Credentials authenticated. Redirecting to Dealer Dashboard...'
+          targetText: 'Dealer authenticated. Redirecting to Dealer Dashboard...'
         });
 
         setTimeout(() => {
-          navigate('/dealer/dashboard');
-        }, 800);
+          navigate('/dealer/dashboard', { replace: true });
+        }, 700);
+      } else if (userRole === 'admin') {
+        // Strictly separate Admin authentication - redirect to /admin/login
+        setAuthError('Admin accounts must authenticate via the dedicated Admin Portal. Please use /admin/login.');
       } else {
-        // Unknown or unsupported role: do not redirect, display appropriate error
-        clearStoredUser();
-        setLoginSuccess(null);
-        setAuthError(`Access restricted: Account role "${userRole || 'unspecified'}" does not have dashboard access. Only Admin and Dealer roles are supported.`);
+        setAuthError(`Access restricted: Unsupported role "${userRole}". Please contact GROVE support.`);
       }
-    }, 600);
+    }, 500);
   };
 
   // Quick fill demo user credentials by role
-  const fillDemoCredentials = (role = 'dealer') => {
-    const defaultDemo = demoUsers.find((u) => u.role === role) || demoUsers[0];
+  const fillDemoCredentials = (role = 'customer') => {
+    const all = getAllUsers();
+    const defaultDemo = all.find((u) => u.role === role) || all.find((u) => u.role === 'customer');
     if (defaultDemo) {
       setEmail(defaultDemo.email);
       setPassword(defaultDemo.password);
@@ -219,6 +229,14 @@ export default function LoginPage() {
                   </p>
                 </div>
 
+                {/* Shopping Action Login Prompt */}
+                {location.state?.message && !authError && !loginSuccess && (
+                  <div className="mb-5 p-3.5 rounded-[14px] bg-[#E9F3ED] border border-[#1B4332]/25 text-[#1B4332] flex items-center gap-2.5 text-xs font-bold animate-in fade-in duration-150">
+                    <AlertCircle className="w-4 h-4 text-[#1B4332] shrink-0" />
+                    <span>{location.state.message}</span>
+                  </div>
+                )}
+
                 {/* Login Success Alert */}
                 {loginSuccess && (
                   <div className="mb-6 p-4 rounded-[16px] bg-[#EBF4EE] border border-[#40916C]/40 text-[#081C15] flex items-center gap-3 animate-in fade-in duration-200">
@@ -240,10 +258,10 @@ export default function LoginPage() {
                         <span>Try demo:</span>
                         <button
                           type="button"
-                          onClick={() => fillDemoCredentials('admin')}
+                          onClick={() => fillDemoCredentials('customer')}
                           className="underline hover:opacity-80 cursor-pointer"
                         >
-                          Admin
+                          Customer
                         </button>
                         <span>•</span>
                         <button
@@ -253,6 +271,13 @@ export default function LoginPage() {
                         >
                           Dealer
                         </button>
+                        <span>•</span>
+                        <Link
+                          to="/admin/login"
+                          className="underline hover:opacity-80 text-neutral-600"
+                        >
+                          Admin Portal &rarr;
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -383,21 +408,21 @@ export default function LoginPage() {
 
                 {/* Demo Helper Pill */}
                 <div className="mt-4 pt-3 border-t border-neutral-100 flex flex-wrap items-center justify-between gap-2 text-xs text-neutral-500">
-                  <span>Demo Logins:</span>
+                  <span>Demo Accounts:</span>
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
-                      onClick={() => fillDemoCredentials('admin')}
+                      onClick={() => fillDemoCredentials('customer')}
                       className="font-bold text-[#1B4332] hover:underline bg-[#EBF4EE] px-2.5 py-1 rounded-full text-[11px] cursor-pointer"
                     >
-                      Admin
+                      Customer (Harish)
                     </button>
                     <button
                       type="button"
                       onClick={() => fillDemoCredentials('dealer')}
                       className="font-bold text-[#1B4332] hover:underline bg-[#EBF4EE] px-2.5 py-1 rounded-full text-[11px] cursor-pointer"
                     >
-                      Dealer
+                      Dealer (Demo)
                     </button>
                   </div>
                 </div>

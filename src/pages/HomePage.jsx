@@ -28,6 +28,14 @@ export default function HomePage() {
     return selected.length === 5 ? selected : agricultureData.slice(0, 5);
   }, []);
 
+  const electronicsEssentials = useMemo(() => {
+    return ELECTRONICS_PRODUCTS.slice(0, 5);
+  }, []);
+
+  const automotiveEssentials = useMemo(() => {
+    return AUTOMOTIVE_PRODUCTS.slice(0, 5);
+  }, []);
+
   return (
     <main className="min-h-screen bg-[#F7F3EA] text-neutral-900 overflow-x-hidden font-sans">
       {/* 1 & 2: Navbar, Hero, SearchBar, and 3 Overlapping Category Cards */}
@@ -57,11 +65,11 @@ export default function HomePage() {
         title="Electronics & Gadgets"
         subtitle="Technology for work and everyday life."
         viewAllText="View All Electronics"
-        viewAllHref="#electronics"
+        viewAllHref="/electronics"
         accentColor="#171717"
         tagColor="#171717"
         tagBg="#EDE8DE"
-        products={ELECTRONICS_PRODUCTS}
+        products={electronicsEssentials}
       />
 
       {/* 6: Automotive & Spare Parts (5 Product Cards) */}
@@ -71,11 +79,11 @@ export default function HomePage() {
         title="Automotive & Spare Parts"
         subtitle="Quality parts for every journey."
         viewAllText="View All Automotive"
-        viewAllHref="#automotive"
+        viewAllHref="/automotive"
         accentColor="#FF383F"
         tagColor="#FF383F"
         tagBg="#FDE2E1"
-        products={AUTOMOTIVE_PRODUCTS}
+        products={automotiveEssentials}
       />
 
       {/* 7: Promotional Offer Banner */}

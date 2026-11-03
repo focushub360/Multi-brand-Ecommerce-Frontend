@@ -12,7 +12,7 @@ export default function BestSellers() {
     : BEST_SELLERS.filter((p) => p.category.toLowerCase() === activeCategory.toLowerCase());
 
   return (
-    <section id="best-sellers" className="w-full bg-[#F7F3EA] pt-[96px] sm:pt-[106px] md:pt-[128px] lg:pt-[134px] pb-7 md:pb-8 border-b border-neutral-200/50">
+    <section id="best-sellers" className="w-full bg-[#F7F3EA] pt-10 sm:pt-14 lg:pt-[134px] pb-7 md:pb-8 border-b border-neutral-200/50">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-10 lg:px-16">
         {/* Section Header Row */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3.5 pb-3.5 md:pb-4">

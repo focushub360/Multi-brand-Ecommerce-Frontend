@@ -13,7 +13,7 @@ import {
   ArrowRight
 } from 'lucide-react';
 import CategoryShowcase from '../components/auth/CategoryShowcase';
-import demoUsers from '../data/users.json';
+import { addRegisteredUser, getAllUsers } from '../utils/auth';
 
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -85,8 +85,9 @@ export default function SignupPage() {
       if (!emailRegex.test(trimmedEmail)) {
         errs.email = 'Please enter a valid email address.';
       } else {
-        // Prevent duplicate email registration within frontend demo data
-        const isDuplicate = demoUsers.some(
+        // Prevent duplicate email registration within frontend demo data and registry
+        const allUsers = getAllUsers();
+        const isDuplicate = allUsers.some(
           (u) => u.email.toLowerCase() === trimmedEmail.toLowerCase()
         );
         if (isDuplicate) {
@@ -135,6 +136,16 @@ export default function SignupPage() {
 
     setTimeout(() => {
       setIsSubmitting(false);
+
+      const newUser = {
+        id: Date.now(),
+        name: formData.fullName.trim(),
+        email: formData.email.trim(),
+        password: formData.password,
+        role: 'customer'
+      };
+
+      addRegisteredUser(newUser);
       setSignupSuccess(true);
     }, 700);
   };

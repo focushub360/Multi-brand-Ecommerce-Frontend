@@ -166,10 +166,10 @@ export default function ProductInfoColumn({ product, onJumpToReviews }) {
         </div>
       )}
 
-      {/* Agriculture-Specific Quick Specs (Category Dependent) */}
+      {/* Category-Specific Quick Specs / Parameters */}
       <div className="mt-2 p-3.5 sm:p-4 rounded-[16px] bg-neutral-50 border border-neutral-200/80">
         <h3 className="text-xs font-extrabold uppercase tracking-wider text-neutral-600 mb-3 flex items-center justify-between">
-          <span>Agricultural Parameters</span>
+          <span>{agri.categoryType ? 'Agricultural Parameters' : 'Product Parameters'}</span>
           <span className="text-[10.5px] font-bold text-[#1B4332] bg-white px-2 py-0.5 rounded-md border border-neutral-200">
             {product.category}
           </span>
@@ -321,6 +321,32 @@ export default function ProductInfoColumn({ product, onJumpToReviews }) {
                 <span className="font-bold text-neutral-900">{agri.targetPests}</span>
               </div>
             </>
+          )}
+
+          {/* General / Electronics / Automotive Specifications Fallback */}
+          {!agri.categoryType && product.specifications && typeof product.specifications === 'object' && !Array.isArray(product.specifications) && (
+            Object.entries(product.specifications).slice(0, 6).map(([key, val]) => (
+              <div key={key} className="bg-white p-2 rounded-[10px] border border-neutral-200/60">
+                <span className="text-neutral-500 text-[10px] font-bold uppercase block truncate">{key}</span>
+                <span className="font-bold text-neutral-900 truncate block">{val}</span>
+              </div>
+            ))
+          )}
+          {!agri.categoryType && Array.isArray(product.specifications) && (
+            product.specifications.slice(0, 6).map((spec, idx) => (
+              <div key={idx} className="bg-white p-2 rounded-[10px] border border-neutral-200/60">
+                <span className="text-neutral-500 text-[10px] font-bold uppercase block truncate">{spec.name}</span>
+                <span className="font-bold text-neutral-900 truncate block">{spec.value}</span>
+              </div>
+            ))
+          )}
+          {!agri.categoryType && !product.specifications && product.specs && (
+            Object.entries(product.specs).slice(0, 6).map(([key, val]) => (
+              <div key={key} className="bg-white p-2 rounded-[10px] border border-neutral-200/60">
+                <span className="text-neutral-500 text-[10px] font-bold uppercase block truncate">{key}</span>
+                <span className="font-bold text-neutral-900 truncate block">{val}</span>
+              </div>
+            ))
           )}
         </div>
       </div>

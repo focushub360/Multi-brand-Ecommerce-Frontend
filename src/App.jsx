@@ -3,6 +3,10 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import AgriculturePage from './pages/AgriculturePage';
 import AgricultureProductDetailPage from './pages/AgricultureProductDetailPage';
+import ProductDetailPage from './pages/ProductDetailPage';
+import ElectronicsPage from './pages/ElectronicsPage';
+import AutomotivePage from './pages/AutomotivePage';
+import GroceriesPage from './pages/GroceriesPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import BecomeDealerPage from './pages/BecomeDealerPage';
@@ -38,6 +42,15 @@ import DealerAnalytics from './pages/dealer/DealerAnalytics';
 import DealerStoreSettings from './pages/dealer/DealerStoreSettings';
 import DealerHelpSupport from './pages/dealer/DealerHelpSupport';
 
+// GROVE Customer Shopping & Account Pages
+import WishlistPage from './pages/customer/WishlistPage';
+import CartPage from './pages/customer/CartPage';
+import CheckoutPage from './pages/customer/CheckoutPage';
+import OrderConfirmationPage from './pages/customer/OrderConfirmationPage';
+import OrdersPage from './pages/customer/OrdersPage';
+import OrderDetailsPage from './pages/customer/OrderDetailsPage';
+import AddressesPage from './pages/customer/AddressesPage';
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -47,9 +60,80 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/agriculture" element={<AgriculturePage />} />
         <Route path="/agriculture/product/:productId" element={<AgricultureProductDetailPage />} />
+        <Route path="/electronics" element={<ElectronicsPage />} />
+        <Route path="/electronics/product/:productId" element={<ProductDetailPage />} />
+        <Route path="/automotive" element={<AutomotivePage />} />
+        <Route path="/automotive/product/:productId" element={<ProductDetailPage />} />
+        <Route path="/groceries" element={<GroceriesPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/become-a-dealer" element={<BecomeDealerPage />} />
+
+        {/* Fallback Product Detail Route Aliases */}
+        <Route path="/product/:productId" element={<AgricultureProductDetailPage />} />
+        <Route path="/products/:productId" element={<ProductDetailPage />} />
+
+        {/* Protected Customer Shopping & Account Routes */}
+        <Route 
+          path="/wishlist" 
+          element={
+            <ProtectedRoute allowedRole="customer">
+              <WishlistPage />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/cart" 
+          element={
+            <ProtectedRoute allowedRole="customer">
+              <CartPage />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/checkout" 
+          element={
+            <ProtectedRoute allowedRole="customer">
+              <CheckoutPage />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/order-confirmation/:orderId" 
+          element={
+            <ProtectedRoute allowedRole="customer">
+              <OrderConfirmationPage />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/account" 
+          element={<Navigate to="/account/orders" replace />} 
+        />
+        <Route 
+          path="/account/orders" 
+          element={
+            <ProtectedRoute allowedRole="customer">
+              <OrdersPage />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/account/orders/:orderId" 
+          element={
+            <ProtectedRoute allowedRole="customer">
+              <OrderDetailsPage />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/account/addresses" 
+          element={
+            <ProtectedRoute allowedRole="customer">
+              <AddressesPage />
+            </ProtectedRoute>
+          } 
+        />
 
         {/* Dedicated Admin Portal Authentication */}
         <Route path="/admin/login" element={<AdminLoginPage />} />

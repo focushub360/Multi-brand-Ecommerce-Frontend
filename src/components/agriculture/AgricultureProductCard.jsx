@@ -27,11 +27,13 @@ export default function AgricultureProductCard({
     e.preventDefault();
     e.stopPropagation();
     if (onAddToCart) {
-      onAddToCart(product);
-      setIsAdded(true);
-      setTimeout(() => {
-        setIsAdded(false);
-      }, 1500);
+      const added = onAddToCart(product);
+      if (added !== false) {
+        setIsAdded(true);
+        setTimeout(() => {
+          setIsAdded(false);
+        }, 1500);
+      }
     }
   };
 
@@ -42,7 +44,16 @@ export default function AgricultureProductCard({
   };
 
   const savings = product.savings || (product.originalPrice ? product.originalPrice - product.price : 0);
-  const productUrl = `/agriculture/product/${product.id}`;
+  
+  const getProductRoute = () => {
+    if (product.productUrl) return product.productUrl;
+    const id = String(product.id || '').toLowerCase();
+    const cat = String(product.category || '').toLowerCase();
+    if (id.startsWith('el-') || cat.includes('electronics')) return `/electronics/product/${product.id}`;
+    if (id.startsWith('au-') || cat.includes('automotive')) return `/automotive/product/${product.id}`;
+    return `/agriculture/product/${product.id}`;
+  };
+  const productUrl = getProductRoute();
 
   return (
     <article className="bg-white rounded-[20px] p-3.5 sm:p-4 flex flex-col justify-between h-full shadow-[0_2px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_28px_rgba(27,67,50,0.12)] hover:-translate-y-1 transition-all duration-300 border border-neutral-200/80 group select-none relative">

@@ -7,26 +7,38 @@ import { useWishlist } from '../hooks/useWishlist';
 export default function ProductCard({ product }) {
   const navigate = useNavigate();
   const [imgSrc, setImgSrc] = useState(product?.image);
-  const [localFavorite, setLocalFavorite] = useState(false);
 
   const { isWishlisted, toggleWishlist } = useWishlist();
 
   if (!product) return null;
 
-  // Check if this product is in the Agriculture catalog (IDs prefixed with 'ag-')
+  // Resolve category navigation URL based on product ID prefix or category
   const productIdStr = String(product.id || '');
   const isAgri = Boolean(productIdStr.startsWith('ag-'));
+  const isElectronics = Boolean(
+    productIdStr.startsWith('el-') || 
+    (product.category && product.category.toLowerCase().includes('electron'))
+  );
+  const isAutomotive = Boolean(
+    productIdStr.startsWith('au-') || 
+    (product.category && product.category.toLowerCase().includes('auto'))
+  );
 
-  const productUrl = isAgri ? `/agriculture/product/${productIdStr}` : null;
-  const isFavorite = isWishlisted ? isWishlisted(product.id) : localFavorite;
+  let productUrl = null;
+  if (isAgri) {
+    productUrl = `/agriculture/product/${productIdStr}`;
+  } else if (isElectronics) {
+    productUrl = `/electronics/product/${productIdStr}`;
+  } else if (isAutomotive) {
+    productUrl = `/automotive/product/${productIdStr}`;
+  }
+  const isFavorite = isWishlisted ? isWishlisted(product.id) : false;
 
   const handleWishlistToggle = (e) => {
     e.preventDefault();
     e.stopPropagation();
     if (toggleWishlist) {
       toggleWishlist(product.id);
-    } else {
-      setLocalFavorite(!localFavorite);
     }
   };
 

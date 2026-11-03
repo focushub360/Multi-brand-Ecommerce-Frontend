@@ -15,7 +15,7 @@ import {
   Layers
 } from 'lucide-react';
 import DealerLayout from '../../components/dealer/DealerLayout';
-import { getStoredUser, getActiveDealerId } from '../../utils/auth';
+import { getStoredDealer, getActiveDealerId } from '../../utils/auth';
 import { 
   getDealerDashboardMetrics, 
   getDealerStoreSettings, 
@@ -24,7 +24,7 @@ import {
 
 export default function DealerDashboard() {
   const navigate = useNavigate();
-  const user = getStoredUser();
+  const user = getStoredDealer();
 
   const [metrics, setMetrics] = useState(() => getDealerDashboardMetrics(getActiveDealerId()));
   const [settings, setSettings] = useState(() => getDealerStoreSettings(getActiveDealerId()));

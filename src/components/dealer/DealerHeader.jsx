@@ -10,12 +10,12 @@ import {
   ExternalLink,
   ShieldCheck
 } from 'lucide-react';
-import { getStoredUser, clearStoredUser, getActiveDealerId } from '../../utils/auth';
+import { getStoredDealer, clearStoredDealer, getActiveDealerId } from '../../utils/auth';
 import { getDealerById, getDealerNotifications } from '../../services/dealerService';
 
 export default function DealerHeader({ onToggleMobile }) {
   const navigate = useNavigate();
-  const user = getStoredUser();
+  const user = getStoredDealer();
   const activeDealerId = getActiveDealerId();
   const dealerProfile = getDealerById(activeDealerId);
 
@@ -35,8 +35,9 @@ export default function DealerHeader({ onToggleMobile }) {
     .toUpperCase();
 
   const handleLogout = () => {
-    clearStoredUser();
-    navigate('/login');
+    setProfileDropdownOpen(false);
+    clearStoredDealer();
+    navigate('/login', { replace: true });
   };
 
   const handleSearchSubmit = (e) => {

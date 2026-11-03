@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { ArrowRight, Sprout, Smartphone, Cog } from 'lucide-react';
+import { ArrowRight, Sprout, Smartphone, Cog, ShoppingBasket } from 'lucide-react';
 import { CATEGORIES } from '../data/products';
 
 export default function CategoryCards() {
@@ -14,6 +14,8 @@ export default function CategoryCards() {
         return <Smartphone className="w-3.5 h-3.5 md:w-4 md:h-4 text-neutral-800" />;
       case 'automotive':
         return <Cog className="w-3.5 h-3.5 md:w-4 md:h-4 text-[#C23631]" />;
+      case 'groceries':
+        return <ShoppingBasket className="w-3.5 h-3.5 md:w-4 md:h-4 text-[#B45309]" />;
       default:
         return null;
     }
@@ -22,30 +24,72 @@ export default function CategoryCards() {
   const handleCardClick = (cardId) => {
     if (cardId === 'agriculture') {
       navigate('/agriculture');
+    } else if (cardId === 'electronics') {
+      navigate('/electronics');
+    } else if (cardId === 'automotive') {
+      navigate('/automotive');
+    } else if (cardId === 'groceries') {
+      navigate('/groceries');
+    }
+  };
+
+  const getCategoryUrl = (cardId) => {
+    if (cardId === 'agriculture') return '/agriculture';
+    if (cardId === 'electronics') return '/electronics';
+    if (cardId === 'automotive') return '/automotive';
+    if (cardId === 'groceries') return '/groceries';
+    return '/';
+  };
+
+  const getTitleColor = (id) => {
+    switch (id) {
+      case 'automotive':
+        return '#A82420';
+      case 'agriculture':
+        return '#0A3325';
+      case 'groceries':
+        return '#78350F';
+      case 'electronics':
+      default:
+        return '#141414';
+    }
+  };
+
+  const getSubtitleColor = (id) => {
+    switch (id) {
+      case 'automotive':
+        return '#D6534E';
+      case 'agriculture':
+        return '#5E7A5A';
+      case 'groceries':
+        return '#B45309';
+      case 'electronics':
+      default:
+        return '#737373';
     }
   };
 
   return (
     <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-10 lg:px-16 w-full pointer-events-auto">
-      {/* Responsive layout: smooth horizontal scroll on mobile, 3-column desktop grid */}
-      <div className="flex md:grid md:grid-cols-3 overflow-x-auto md:overflow-visible snap-x snap-mandatory pb-3 md:pb-0 gap-3 sm:gap-3.5 lg:gap-4 no-scrollbar">
+      {/* Responsive layout: 4 columns on desktop, 2 columns on tablet, 1 column on mobile */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-3.5 lg:gap-3.5 xl:gap-4 w-full">
         {CATEGORIES.map((card) => {
-          const isAgri = card.id === 'agriculture';
+          const categoryUrl = getCategoryUrl(card.id);
+          const titleColor = getTitleColor(card.id);
+          const subtitleColor = getSubtitleColor(card.id);
 
           return (
             <div
               key={card.id}
               onClick={() => handleCardClick(card.id)}
-              className={`min-w-[270px] sm:min-w-[320px] md:min-w-0 flex-1 shrink-0 snap-center rounded-[22px] sm:rounded-[26px] md:rounded-[28px] overflow-hidden p-4 sm:p-5 md:p-6 lg:p-7 relative h-[185px] sm:h-[210px] md:h-[245px] lg:h-[255px] flex flex-col justify-between shadow-[0_8px_24px_rgba(0,0,0,0.06)] hover:shadow-[0_16px_36px_rgba(0,0,0,0.1)] transition-all duration-300 group select-none ${
-                isAgri ? 'cursor-pointer hover:-translate-y-0.5' : ''
-              }`}
+              className="w-full rounded-[22px] sm:rounded-[26px] lg:rounded-[24px] xl:rounded-[28px] overflow-hidden p-4 sm:p-5 lg:p-4.5 xl:p-6 relative h-[185px] sm:h-[205px] md:h-[220px] lg:h-[235px] xl:h-[248px] flex flex-col justify-between shadow-[0_8px_24px_rgba(0,0,0,0.06)] hover:shadow-[0_16px_36px_rgba(0,0,0,0.1)] transition-all duration-300 group select-none cursor-pointer hover:-translate-y-0.5"
               style={{ backgroundColor: card.bgColor }}
             >
               {/* Left Content Area: Badge, Title, Subtitle, Description */}
-              <div className="relative z-10 max-w-[50%] sm:max-w-[48%] flex flex-col items-start">
+              <div className="relative z-10 max-w-[56%] sm:max-w-[54%] md:max-w-[52%] lg:max-w-[58%] xl:max-w-[54%] flex flex-col items-start">
                 {/* Circular Icon Badge */}
                 <div 
-                  className="w-7 h-7 sm:w-7.5 sm:h-7.5 md:w-8 md:h-8 rounded-full flex items-center justify-center mb-2 sm:mb-2.5 md:mb-3.5 transition-transform group-hover:scale-105 duration-200"
+                  className="w-7 h-7 sm:w-7.5 sm:h-7.5 md:w-8 md:h-8 rounded-full flex items-center justify-center mb-2 sm:mb-2.5 md:mb-3 transition-transform group-hover:scale-105 duration-200 shrink-0"
                   style={{ backgroundColor: card.iconBg }}
                 >
                   {getIcon(card.id)}
@@ -53,9 +97,9 @@ export default function CategoryCards() {
 
                 {/* Title */}
                 <h3 
-                  className="text-[17px] sm:text-[19px] md:text-[21px] lg:text-[22px] font-extrabold tracking-tight leading-none"
+                  className="text-[17px] sm:text-[18px] md:text-[19px] lg:text-[17.5px] xl:text-[20px] font-extrabold tracking-tight leading-none"
                   style={{ 
-                    color: card.id === 'automotive' ? '#A82420' : card.id === 'agriculture' ? '#0A3325' : '#141414',
+                    color: titleColor,
                     fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif"
                   }}
                 >
@@ -64,17 +108,15 @@ export default function CategoryCards() {
                 
                 {/* Subtitle */}
                 <p 
-                  className="text-[8.5px] sm:text-[9.5px] md:text-[10px] font-bold tracking-[0.12em] sm:tracking-[0.14em] uppercase mt-0.5 sm:mt-1 mb-1.5 sm:mb-2.5 md:mb-3"
-                  style={{ 
-                    color: card.id === 'automotive' ? '#D6534E' : card.id === 'agriculture' ? '#5E7A5A' : '#737373' 
-                  }}
+                  className="text-[8.5px] sm:text-[9px] md:text-[9.5px] lg:text-[8.5px] xl:text-[9px] font-bold tracking-[0.12em] sm:tracking-[0.14em] uppercase mt-0.5 sm:mt-1 mb-1.5 sm:mb-2"
+                  style={{ color: subtitleColor }}
                 >
                   {card.subtitle}
                 </p>
 
                 {/* Description */}
                 <p 
-                  className="text-[11.5px] sm:text-[12.5px] md:text-[13.5px] font-bold leading-[1.25] text-neutral-800"
+                  className="text-[11.5px] sm:text-[12px] md:text-[12.5px] lg:text-[11px] xl:text-[12px] font-bold leading-[1.25] text-neutral-800"
                 >
                   {card.headingLine1}
                   <br />
@@ -83,52 +125,32 @@ export default function CategoryCards() {
               </div>
 
               {/* Bottom CTA Button */}
-              <div className="relative z-10 mt-2 sm:mt-3 md:mt-4">
-                {isAgri ? (
-                  <Link
-                    to="/agriculture"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                    }}
-                    className="inline-flex items-center gap-1.5 sm:gap-2 group/btn cursor-pointer select-none"
+              <div className="relative z-10 mt-2 sm:mt-3">
+                <Link
+                  to={categoryUrl}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                  className="inline-flex items-center gap-1.5 sm:gap-2 group/btn cursor-pointer select-none"
+                >
+                  <span 
+                    className="w-6 h-6 sm:w-6.5 sm:h-6.5 lg:w-5.5 lg:h-5.5 xl:w-6.5 xl:h-6.5 rounded-full flex items-center justify-center text-white transition-transform duration-200 group-hover/btn:translate-x-0.5 shrink-0"
+                    style={{ backgroundColor: card.accentColor }}
                   >
-                    <span 
-                      className="w-6 h-6 sm:w-6.5 sm:h-6.5 md:w-7 md:h-7 rounded-full flex items-center justify-center text-white transition-transform duration-200 group-hover/btn:translate-x-0.5 shrink-0"
-                      style={{ backgroundColor: card.accentColor }}
-                    >
-                      <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 stroke-[2.2]" />
-                    </span>
-                    <span 
-                      className="text-[11px] sm:text-[11.5px] md:text-[12.5px] font-bold tracking-tight transition-opacity hover:opacity-85 whitespace-nowrap"
-                      style={{ color: '#0A3325' }}
-                    >
-                      {card.cta}
-                    </span>
-                  </Link>
-                ) : (
-                  <a
-                    href={`#${card.id}`}
-                    className="inline-flex items-center gap-1.5 sm:gap-2 group/btn cursor-pointer select-none"
+                    <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 stroke-[2.2]" />
+                  </span>
+                  <span 
+                    className="text-[11px] sm:text-[11.5px] md:text-[12px] lg:text-[10px] xl:text-[11.5px] font-bold tracking-tight transition-opacity hover:opacity-85 whitespace-nowrap"
+                    style={{ color: titleColor }}
                   >
-                    <span 
-                      className="w-6 h-6 sm:w-6.5 sm:h-6.5 md:w-7 md:h-7 rounded-full flex items-center justify-center text-white transition-transform duration-200 group-hover/btn:translate-x-0.5 shrink-0"
-                      style={{ backgroundColor: card.accentColor }}
-                    >
-                      <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 stroke-[2.2]" />
-                    </span>
-                    <span 
-                      className="text-[11px] sm:text-[11.5px] md:text-[12.5px] font-bold tracking-tight transition-opacity hover:opacity-85 whitespace-nowrap"
-                      style={{ color: card.id === 'automotive' ? '#A82420' : '#141414' }}
-                    >
-                      {card.cta}
-                    </span>
-                  </a>
-                )}
+                    {card.cta}
+                  </span>
+                </Link>
               </div>
 
               {/* Right Product Imagery with seamless left alpha gradient mask */}
               <div 
-                className="absolute right-0 bottom-0 top-0 w-[48%] sm:w-[50%] md:w-[54%] pointer-events-none flex items-end justify-end overflow-hidden"
+                className="absolute right-0 bottom-0 top-0 w-[46%] sm:w-[48%] md:w-[50%] lg:w-[46%] xl:w-[50%] pointer-events-none flex items-end justify-end overflow-hidden"
                 style={{
                   WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 22%, black 100%)',
                   maskImage: 'linear-gradient(to right, transparent 0%, black 22%, black 100%)',

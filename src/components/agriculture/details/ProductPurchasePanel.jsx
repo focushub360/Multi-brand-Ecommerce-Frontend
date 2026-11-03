@@ -116,11 +116,13 @@ export default function ProductPurchasePanel({
 
   const handleAddToCartClick = () => {
     if (onAddToCart) {
-      onAddToCart(product, quantity);
-      setIsAdded(true);
-      setTimeout(() => {
-        setIsAdded(false);
-      }, 1800);
+      const added = onAddToCart(product, quantity);
+      if (added !== false) {
+        setIsAdded(true);
+        setTimeout(() => {
+          setIsAdded(false);
+        }, 1800);
+      }
     }
   };
 

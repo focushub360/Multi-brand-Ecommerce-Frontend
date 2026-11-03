@@ -13,7 +13,7 @@ import {
   X,
   ExternalLink
 } from 'lucide-react';
-import { getStoredUser, clearStoredUser, getActiveDealerId } from '../../utils/auth';
+import { getStoredDealer, clearStoredDealer, getActiveDealerId } from '../../utils/auth';
 import { getDealerById } from '../../services/dealerService';
 
 const NAV_ITEMS = [
@@ -29,15 +29,16 @@ const NAV_ITEMS = [
 export default function DealerSidebar({ mobileOpen, onCloseMobile }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const user = getStoredUser();
+  const user = getStoredDealer();
   const activeDealerId = getActiveDealerId();
   const dealerProfile = getDealerById(activeDealerId);
 
   const dealerName = user?.name || dealerProfile?.name || 'Demo Dealer';
 
   const handleLogout = () => {
-    clearStoredUser();
-    navigate('/login');
+    if (onCloseMobile) onCloseMobile();
+    clearStoredDealer();
+    navigate('/login', { replace: true });
   };
 
   const isItemActive = (path) => {
