@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import HomePage from './pages/HomePage';
@@ -7,6 +8,7 @@ import ProductDetailPage from './pages/ProductDetailPage';
 import ElectronicsPage from './pages/ElectronicsPage';
 import AutomotivePage from './pages/AutomotivePage';
 import GroceriesPage from './pages/GroceriesPage';
+import GroceriesProductDetailPage from './pages/GroceriesProductDetailPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import BecomeDealerPage from './pages/BecomeDealerPage';
@@ -58,13 +60,22 @@ export default function App() {
       <Routes>
         {/* Public Marketplace Routes */}
         <Route path="/" element={<HomePage />} />
+
         <Route path="/agriculture" element={<AgriculturePage />} />
         <Route path="/agriculture/product/:productId" element={<AgricultureProductDetailPage />} />
+
         <Route path="/electronics" element={<ElectronicsPage />} />
         <Route path="/electronics/product/:productId" element={<ProductDetailPage />} />
+
         <Route path="/automotive" element={<AutomotivePage />} />
         <Route path="/automotive/product/:productId" element={<ProductDetailPage />} />
+
         <Route path="/groceries" element={<GroceriesPage />} />
+        <Route
+          path="/groceries/product/:productId"
+          element={<GroceriesProductDetailPage />}
+        />
+
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/become-a-dealer" element={<BecomeDealerPage />} />
@@ -74,261 +85,293 @@ export default function App() {
         <Route path="/products/:productId" element={<ProductDetailPage />} />
 
         {/* Protected Customer Shopping & Account Routes */}
-        <Route 
-          path="/wishlist" 
+        <Route
+          path="/wishlist"
           element={
             <ProtectedRoute allowedRole="customer">
               <WishlistPage />
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/cart" 
+
+        <Route
+          path="/cart"
           element={
             <ProtectedRoute allowedRole="customer">
               <CartPage />
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/checkout" 
+
+        <Route
+          path="/checkout"
           element={
             <ProtectedRoute allowedRole="customer">
               <CheckoutPage />
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/order-confirmation/:orderId" 
+
+        <Route
+          path="/order-confirmation/:orderId"
           element={
             <ProtectedRoute allowedRole="customer">
               <OrderConfirmationPage />
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/account" 
-          element={<Navigate to="/account/orders" replace />} 
+
+        <Route
+          path="/account"
+          element={<Navigate to="/account/orders" replace />}
         />
-        <Route 
-          path="/account/orders" 
+
+        <Route
+          path="/account/orders"
           element={
             <ProtectedRoute allowedRole="customer">
               <OrdersPage />
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/account/orders/:orderId" 
+
+        <Route
+          path="/account/orders/:orderId"
           element={
             <ProtectedRoute allowedRole="customer">
               <OrderDetailsPage />
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/account/addresses" 
+
+        <Route
+          path="/account/addresses"
           element={
             <ProtectedRoute allowedRole="customer">
               <AddressesPage />
             </ProtectedRoute>
-          } 
+          }
         />
 
         {/* Dedicated Admin Portal Authentication */}
         <Route path="/admin/login" element={<AdminLoginPage />} />
-        <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
+        <Route
+          path="/admin"
+          element={<Navigate to="/admin/dashboard" replace />}
+        />
 
-        {/* Protected Admin Routes (13 Core Modules) */}
-        <Route 
-          path="/admin/dashboard" 
+        {/* Protected Admin Routes */}
+        <Route
+          path="/admin/dashboard"
           element={
             <AdminProtectedRoute>
               <AdminDashboardOverview />
             </AdminProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/admin/dealers" 
+
+        <Route
+          path="/admin/dealers"
           element={
             <AdminProtectedRoute>
               <AdminDealersPage />
             </AdminProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/admin/products" 
+
+        <Route
+          path="/admin/products"
           element={
             <AdminProtectedRoute>
               <AdminProductsPage />
             </AdminProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/admin/inventory" 
+
+        <Route
+          path="/admin/inventory"
           element={
             <AdminProtectedRoute>
               <AdminInventoryPage />
             </AdminProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/admin/orders" 
+
+        <Route
+          path="/admin/orders"
           element={
             <AdminProtectedRoute>
               <AdminOrdersPage />
             </AdminProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/admin/users" 
+
+        <Route
+          path="/admin/users"
           element={
             <AdminProtectedRoute>
               <AdminUsersPage />
             </AdminProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/admin/locations" 
+
+        <Route
+          path="/admin/locations"
           element={
             <AdminProtectedRoute>
               <AdminLocationsPage />
             </AdminProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/admin/categories" 
+
+        <Route
+          path="/admin/categories"
           element={
             <AdminProtectedRoute>
               <AdminCategoriesPage />
             </AdminProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/admin/analytics" 
+
+        <Route
+          path="/admin/analytics"
           element={
             <AdminProtectedRoute>
               <AdminAnalyticsPage />
             </AdminProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/admin/payments" 
+
+        <Route
+          path="/admin/payments"
           element={
             <AdminProtectedRoute>
               <AdminPaymentsPage />
             </AdminProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/admin/support" 
+
+        <Route
+          path="/admin/support"
           element={
             <AdminProtectedRoute>
               <AdminSupportPage />
             </AdminProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/admin/reports" 
+
+        <Route
+          path="/admin/reports"
           element={
             <AdminProtectedRoute>
               <AdminReportsPage />
             </AdminProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/admin/settings" 
+
+        <Route
+          path="/admin/settings"
           element={
             <AdminProtectedRoute>
               <AdminSettingsPage />
             </AdminProtectedRoute>
-          } 
+          }
         />
 
         {/* Protected Dealer Portal Routes */}
-        <Route 
-          path="/dealer/dashboard" 
+        <Route
+          path="/dealer/dashboard"
           element={
             <ProtectedRoute allowedRole="dealer">
               <DealerDashboard />
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/dealer/overview" 
-          element={<Navigate to="/dealer/dashboard" replace />} 
+
+        <Route
+          path="/dealer/overview"
+          element={<Navigate to="/dealer/dashboard" replace />}
         />
-        <Route 
-          path="/dealer/products" 
+
+        <Route
+          path="/dealer/products"
           element={
             <ProtectedRoute allowedRole="dealer">
               <DealerProducts />
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/dealer/products/add" 
+
+        <Route
+          path="/dealer/products/add"
           element={
             <ProtectedRoute allowedRole="dealer">
               <AddProduct />
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/dealer/products/edit/:id" 
+
+        <Route
+          path="/dealer/products/edit/:id"
           element={
             <ProtectedRoute allowedRole="dealer">
               <EditProduct />
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/dealer/inventory" 
+
+        <Route
+          path="/dealer/inventory"
           element={
             <ProtectedRoute allowedRole="dealer">
               <DealerInventory />
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/dealer/orders" 
+
+        <Route
+          path="/dealer/orders"
           element={
             <ProtectedRoute allowedRole="dealer">
               <DealerOrders />
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/dealer/orders/:id" 
+
+        <Route
+          path="/dealer/orders/:id"
           element={
             <ProtectedRoute allowedRole="dealer">
               <DealerOrderDetails />
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/dealer/analytics" 
+
+        <Route
+          path="/dealer/analytics"
           element={
             <ProtectedRoute allowedRole="dealer">
               <DealerAnalytics />
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/dealer/store-settings" 
+
+        <Route
+          path="/dealer/store-settings"
           element={
             <ProtectedRoute allowedRole="dealer">
               <DealerStoreSettings />
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/dealer/help-support" 
+
+        <Route
+          path="/dealer/help-support"
           element={
             <ProtectedRoute allowedRole="dealer">
               <DealerHelpSupport />
             </ProtectedRoute>
-          } 
+          }
         />
 
         {/* Fallback route */}
