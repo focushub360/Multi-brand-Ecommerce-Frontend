@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Layers } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { GROCERIES_CATEGORY_ITEMS } from '../../constants/groceriesConstants';
 
 export default function GroceriesCategoryFilters({
@@ -10,86 +9,82 @@ export default function GroceriesCategoryFilters({
 }) {
   const selectedCategory = category || 'All Products';
 
-  const selectCategory = (value) => {
-    setCategory(value);
-  };
-
   return (
     <section
-      aria-label="Grocery Categories"
-      className="w-full bg-[#F8FAF8] pt-6 sm:pt-8 pb-3 sm:pb-4"
+      aria-label="Explore Grocery Categories"
+      className="bg-white py-12 sm:py-16"
     >
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-10 lg:px-16">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12">
 
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 mb-2">
+        {/* Section Heading */}
+        <div className="flex items-end justify-between gap-4 mb-7 sm:mb-9">
           <div>
-            <h2
-              className="text-lg sm:text-2xl font-bold text-[#081C15] tracking-tight"
-              style={{
-                fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
-              }}
-            >
-              Shop by Grocery Category
+            <p className="text-xs font-bold uppercase tracking-[2px] text-[#57934D] mb-2">
+              Explore Our Collection
+            </p>
+
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#173D2B]">
+              Shop by Category
             </h2>
 
-            <p className="text-xs sm:text-[13px] text-neutral-500 font-medium mt-0.5">
-              Choose fresh groceries or browse all daily essentials below.
+            <p className="text-sm text-[#778477] mt-2">
+              Everything fresh, all in one place.
             </p>
           </div>
 
-          <div className="self-start sm:self-auto">
-            <button
-              type="button"
-              onClick={() => selectCategory('All Products')}
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
-                selectedCategory === 'All Products'
-                  ? 'bg-[#1B4332] text-white shadow-xs'
-                  : 'bg-white text-neutral-700 border border-neutral-300 hover:border-[#52B788]'
-              }`}
-            >
-              <Layers className="w-3.5 h-3.5" />
-              <span>
-                All Groceries ({categoryCounts['All Products'] || 0})
-              </span>
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={() => setCategory('All Products')}
+            className="hidden sm:flex items-center gap-2 text-sm font-bold text-[#267A3D] hover:text-[#173D2B]"
+          >
+            View All
+            <ArrowRight size={17} />
+          </button>
         </div>
 
-        <div className="flex sm:grid sm:grid-cols-3 lg:grid-cols-6 gap-2.5 sm:gap-3.5 lg:gap-4 overflow-x-auto sm:overflow-visible no-scrollbar snap-x pb-2 select-none -mx-4 px-4 sm:mx-0 sm:px-0">
+        {/* All Categories */}
+        <div className="mb-6">
+          <button
+            type="button"
+            onClick={() => setCategory('All Products')}
+            className={`px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all ${
+              selectedCategory === 'All Products'
+                ? 'bg-[#267A3D] text-white'
+                : 'bg-[#F1F7EE] text-[#315C37] hover:bg-[#E4F0DF]'
+            }`}
+          >
+            All Groceries ({categoryCounts['All Products'] || 0})
+          </button>
+        </div>
+
+        {/* Single Row Horizontal Categories */}
+        <div
+          className="flex flex-nowrap gap-3 sm:gap-5 overflow-x-auto overflow-y-hidden pb-4 scroll-smooth"
+          style={{
+            scrollbarWidth: 'thin',
+            scrollbarColor: '#A8CDA0 transparent',
+          }}
+        >
           {GROCERIES_CATEGORY_ITEMS.map((cat) => {
             const isSelected = selectedCategory === cat.id;
             const count = categoryCounts[cat.id] || 0;
 
             return (
-              <div
+              <button
                 key={cat.id}
-                role="button"
-                tabIndex={0}
-                aria-pressed={isSelected}
+                type="button"
                 onClick={() =>
-                  selectCategory(isSelected ? 'All Products' : cat.id)
+                  setCategory(isSelected ? 'All Products' : cat.id)
                 }
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    selectCategory(
-                      isSelected ? 'All Products' : cat.id
-                    );
-                  }
-                }}
-                className={`min-w-[155px] sm:min-w-0 flex-1 snap-start rounded-[18px] p-2.5 sm:p-3 transition-all duration-200 cursor-pointer flex flex-col justify-between relative group ${
+                aria-pressed={isSelected}
+                className={`group text-left rounded-2xl overflow-hidden border transition-all duration-300 hover:-translate-y-1 hover:shadow-lg shrink-0 w-[178px] sm:w-[178px] ${
                   isSelected
-                    ? 'bg-[#1B4332] text-white shadow-md ring-2 ring-[#1B4332] ring-offset-2'
-                    : 'bg-white text-neutral-800 border border-neutral-200 hover:border-[#52B788] hover:shadow-xs hover:-translate-y-0.5'
+                    ? 'border-[#267A3D] ring-2 ring-[#267A3D]/20 shadow-md'
+                    : 'border-[#E6EEE3] hover:border-[#A8CDA0]'
                 }`}
               >
-                <div
-                  className={`w-full h-20 sm:h-24 rounded-[12px] overflow-hidden flex items-center justify-center p-2 mb-2 transition-colors ${
-                    isSelected
-                      ? 'bg-[#081C15]'
-                      : 'bg-neutral-50 group-hover:bg-[#1B4332]/5'
-                  }`}
-                >
+                {/* Category Image */}
+                <div className="relative h-28 sm:h-36 bg-[#F1F7EE] overflow-hidden">
                   <img
                     src={cat.image}
                     alt={cat.title}
@@ -97,32 +92,42 @@ export default function GroceriesCategoryFilters({
                       e.currentTarget.onerror = null;
                       e.currentTarget.src = cat.fallback;
                     }}
-                    className="max-h-full max-w-full w-auto h-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     loading="lazy"
                   />
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#173D2B]/35 to-transparent" />
+
+                  {isSelected && (
+                    <span className="absolute top-2 right-2 bg-[#267A3D] text-white text-[10px] font-bold px-2.5 py-1 rounded-full">
+                      Selected
+                    </span>
+                  )}
                 </div>
 
-                <div className="flex flex-col min-w-0">
-                  <span
-                    className={`text-xs font-bold leading-tight truncate ${
-                      isSelected ? 'text-white' : 'text-neutral-900'
-                    }`}
-                  >
+                {/* Category Information */}
+                <div className="bg-[#F8FBF6] p-3 sm:p-4">
+                  <h3 className="text-xs sm:text-sm font-bold text-[#173D2B] leading-snug whitespace-nowrap overflow-hidden text-ellipsis">
                     {cat.title}
-                  </span>
+                  </h3>
 
-                  <span
-                    className={`text-[10.5px] font-medium mt-0.5 ${
-                      isSelected ? 'text-neutral-300' : 'text-neutral-500'
-                    }`}
-                  >
-                    {count} {count === 1 ? 'item' : 'items'}
-                  </span>
+                  <p className="text-[10px] sm:text-xs text-[#829080] mt-1">
+                    {count} {count === 1 ? 'product' : 'products'}
+                  </p>
+
+                  <div className="flex items-center gap-1 text-[#438B42] text-[10px] font-bold mt-3">
+                    Explore
+                    <ArrowRight
+                      size={12}
+                      className="transition-transform group-hover:translate-x-1"
+                    />
+                  </div>
                 </div>
-              </div>
+              </button>
             );
           })}
         </div>
+
       </div>
     </section>
   );
