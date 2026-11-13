@@ -1,0 +1,116 @@
+<svg width="400" height="460" viewBox="0 0 400 460" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bagGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E2B170" />
+      <stop offset="100%" stop-color="#C68B45" />
+    </linearGradient>
+    <linearGradient id="bagShadow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#A56C2B" />
+      <stop offset="100%" stop-color="#7C4610" />
+    </linearGradient>
+    <linearGradient id="appleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF5A5F" />
+      <stop offset="100%" stop-color="#D92027" />
+    </linearGradient>
+    <linearGradient id="carrotGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF9F1C" />
+      <stop offset="100%" stop-color="#E85D04" />
+    </linearGradient>
+    <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#70C050" />
+      <stop offset="100%" stop-color="#2D7A25" />
+    </linearGradient>
+    <linearGradient id="bottleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#E2E8F0" />
+    </linearGradient>
+    <filter id="softShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="16" stdDeviation="14" flood-color="#552200" flood-opacity="0.16" />
+    </filter>
+  </defs>
+
+  <g filter="url(#softShadow)">
+    <!-- Behind Grocery Items -->
+    <!-- Bread Baguette -->
+    <g transform="rotate(22 280 150)">
+      <rect x="250" y="50" width="46" height="180" rx="23" fill="#DDA15E" />
+      <line x1="262" y1="80" x2="284" y2="92" stroke="#BC6C25" stroke-width="4" stroke-linecap="round" />
+      <line x1="262" y1="110" x2="284" y2="122" stroke="#BC6C25" stroke-width="4" stroke-linecap="round" />
+      <line x1="262" y1="140" x2="284" y2="152" stroke="#BC6C25" stroke-width="4" stroke-linecap="round" />
+    </g>
+
+    <!-- Milk Bottle -->
+    <g transform="translate(105, 100)">
+      <rect x="18" y="0" width="24" height="24" rx="4" fill="#60A5FA" />
+      <path d="M22 24 L10 50 L10 130 Q10 140 20 140 L40 140 Q50 140 50 130 L50 50 L38 24 Z" fill="url(#bottleGrad)" />
+      <!-- Bottle Label -->
+      <rect x="10" y="70" width="40" height="35" fill="#3B82F6" rx="2" />
+      <circle cx="30" cy="87" r="7" fill="#FFFFFF" />
+    </g>
+
+    <!-- Celery / Green Leaves -->
+    <path d="M190 140 C170 70 200 30 225 15 C230 45 220 95 210 140 Z" fill="url(#leafGrad)" />
+    <path d="M210 140 C230 75 255 40 270 30 C265 65 245 105 225 140 Z" fill="#5BA83C" />
+    <path d="M175 145 C150 85 160 50 170 40 C185 70 190 110 185 145 Z" fill="#3E8924" />
+
+    <!-- Carrot -->
+    <g transform="rotate(-18 160 170)">
+      <path d="M150 120 Q162 110 174 120 L166 210 Q162 215 158 210 Z" fill="url(#carrotGrad)" />
+      <!-- Carrot leafy top -->
+      <path d="M162 112 Q158 95 152 90 Q160 98 162 112" stroke="#3E8924" stroke-width="4" stroke-linecap="round" />
+      <path d="M162 112 Q164 92 168 85 Q165 98 162 112" stroke="#5BA83C" stroke-width="4" stroke-linecap="round" />
+    </g>
+
+    <!-- Red Apple -->
+    <g transform="translate(195, 155)">
+      <circle cx="35" cy="35" r="32" fill="url(#appleGrad)" />
+      <path d="M35 5 Q38 -6 45 -8" stroke="#5C3D2E" stroke-width="3.5" stroke-linecap="round" />
+      <path d="M37 2 Q48 0 52 -6 Q48 -10 40 -4 Z" fill="#70C050" />
+      <!-- Specular shine -->
+      <ellipse cx="24" cy="22" rx="7" ry="12" transform="rotate(-25 24 22)" fill="#FFFFFF" opacity="0.3" />
+    </g>
+
+    <!-- Yellow Lemon / Orange -->
+    <g transform="translate(125, 175)">
+      <circle cx="28" cy="28" r="26" fill="#FBBF24" />
+      <ellipse cx="20" cy="18" rx="5" ry="9" transform="rotate(-30 20 18)" fill="#FFFFFF" opacity="0.35" />
+    </g>
+
+    <!-- Craft Grocery Paper Bag -->
+    <g transform="translate(80, 180)">
+      <!-- Main Bag Body -->
+      <path d="M10 30 L230 30 L216 230 Q215 240 204 240 L36 240 Q25 240 24 230 Z" fill="url(#bagGrad)" />
+      <!-- Top Fold / Rim -->
+      <path d="M5 25 L235 25 L230 42 L10 42 Z" fill="#D3964E" />
+      <!-- Bag Center Fold Shadow crease -->
+      <path d="M120 42 L120 238" stroke="#B07530" stroke-width="2.5" stroke-dasharray="6 4" opacity="0.7" />
+      <!-- Bag Side shading -->
+      <path d="M10 42 L36 240 L24 230 L10 42" fill="#B77B34" opacity="0.5" />
+      <path d="M230 42 L204 240 L216 230 L230 42" fill="#B77B34" opacity="0.4" />
+      
+      <!-- GROVE Organic Stamp on Bag -->
+      <rect x="75" y="105" width="90" height="60" rx="8" fill="#FDF6ED" opacity="0.9" />
+      <rect x="79" y="109" width="82" height="52" rx="6" stroke="#0A3325" stroke-width="1.8" stroke-dasharray="3 2" fill="none" />
+      <!-- Leaf icon in stamp -->
+      <path d="M120 120 C125 115 133 113 138 113 C138 118 135 125 130 128 C126 127 122 124 120 120 Z" fill="#1B4332" />
+      <text x="120" y="146" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-weight="800" font-size="12" fill="#0A3325" text-anchor="middle" letter-spacing="1">GROVE</text>
+      <text x="120" y="157" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-weight="700" font-size="7.5" fill="#8BCB45" text-anchor="middle" letter-spacing="0.5">ORGANIC</text>
+    </g>
+
+    <!-- Front items spilling out gracefully -->
+    <!-- Pear / Avocado on right side -->
+    <g transform="translate(245, 230)">
+      <ellipse cx="26" cy="35" rx="22" ry="28" fill="#84CC16" />
+      <ellipse cx="26" cy="20" rx="15" ry="18" fill="#65A30D" />
+      <path d="M26 4 Q28 -2 34 -4" stroke="#4D382C" stroke-width="3" stroke-linecap="round" />
+    </g>
+
+    <!-- Tomato on left side -->
+    <g transform="translate(70, 260)">
+      <circle cx="28" cy="28" r="26" fill="#EF4444" />
+      <!-- Leaf cap -->
+      <path d="M28 8 L24 2 M28 8 L32 2 M28 8 L20 6 M28 8 L36 6 M28 8 L28 1" stroke="#15803D" stroke-width="2.5" stroke-linecap="round" />
+      <ellipse cx="20" cy="18" rx="4" ry="8" transform="rotate(-30 20 18)" fill="#FFFFFF" opacity="0.3" />
+    </g>
+  </g>
+</svg>

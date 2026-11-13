@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Syne', 'Plus Jakarta Sans', sans-serif;
+  --font-script: 'Caveat', cursive;
+  --font-newsreader: 'Newsreader', Georgia, serif;
+
+  --color-grove-dark: #0A3325;
+  --color-grove-forest: #072C20;
+  --color-grove-green: #8BCB45;
+  --color-grove-red: #FF383F;
+  --color-grove-ivory: #F7F3EA;
+  --color-grove-agri: #EDF0D9;
+  --color-grove-elec: #F5F2EC;
+  --color-grove-auto: #F9E4E1;
+
+  --color-agri-forest: #1B4332;
+  --color-agri-deep: #081C15;
+  --color-agri-leaf: #52B788;
+  --color-agri-ivory: #F8FAF8;
+  --color-agri-gold: #D4AF37;
+
+  /* GROVE Dealer Portal Theme Tokens */
+  --color-primary: #012D1D;
+  --color-primary-container: #1B4332;
+  --color-secondary: #2C694E;
+  --color-secondary-container: #AEEECB;
+  --color-secondary-fixed: #B1F0CE;
+  --color-secondary-fixed-variant: #0E5138;
+  --color-background: #F3FCF3;
+  --color-surface: #F3FCF3;
+  --color-surface-container-lowest: #FFFFFF;
+  --color-surface-container-low: #EDF6ED;
+  --color-surface-container: #E7F0E8;
+  --color-surface-container-high: #E1EBE2;
+  --color-surface-container-highest: #DCE5DC;
+  --color-on-surface: #151D18;
+  --color-on-surface-variant: #414844;
+  --color-outline: #717973;
+  --color-outline-variant: #C1C8C2;
+  --color-on-primary: #FFFFFF;
+  --color-on-secondary: #FFFFFF;
+  --color-on-secondary-container: #316E52;
+  --color-error: #BA1A1A;
+  --color-error-container: #FFDAD6;
+  --color-on-error-container: #93000A;
+  --color-on-error: #FFFFFF;
+  --color-primary-fixed: #C1ECD4;
+  --color-primary-fixed-dim: #A5D0B9;
+}
+
+/* Custom scrollbars and utility styling */
+html {
+  scroll-behavior: smooth;
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background-color: #52B788;
+  color: #081C15;
+}
+
+/* Font family utility classes */
+.font-newsreader {
+  font-family: var(--font-newsreader);
+}
+
+/* Hide scrollbar utility for mobile carousel */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
